@@ -290,7 +290,7 @@ function allDirs(pkgs: readonly Package[]) {
 /// written to the `dist` directory one level up from the entry file.
 /// Any TypeScript files in a `test` directory one level up from main
 /// files will be built in-place.
-export async function build(main: string | readonly string[], options: BuildOptions = {}) {
+export async function build(main: string | readonly string[], options: BuildOptions = {}): Promise<boolean> {
   let pkgs = typeof main == "string" ? [Package.get(main)] : main.map(Package.get)
   let compiled = runTS(allDirs(pkgs), configFor(pkgs, undefined, options), options)
   if (!compiled) return false
@@ -304,7 +304,7 @@ export async function build(main: string | readonly string[], options: BuildOpti
 
 /// Build the given packages, along with an optional set of extra
 /// files, and keep rebuilding them every time an input file changes.
-export function watch(mains: readonly string[], extra: readonly string[] = [], options: BuildOptions = {}) {
+export function watch(mains: readonly string[], extra: readonly string[] = [], options: BuildOptions = {}): void {
   let extraNorm = extra.map(normalize)
   let pkgs = mains.map(Package.get)
   let out = watchTS(allDirs(pkgs), configFor(pkgs, extra, options), options)

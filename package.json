@@ -23,6 +23,7 @@
     "builddocs": "^1.0.2" 
   },
   "dependencies": {
+    "@types/mocha": "^9.1.1",
     "acorn": "^8.1.0",
     "acorn-walk": "^8.0.2",
     "rollup": "^2.35.1",
