@@ -23,6 +23,8 @@ export interface BuildOptions {
   expandLink?: (anchor: string) => string | null
   /// Adds a Rollup output plugin to use.
   outputPlugin?: (root: string) => Plugin | Promise<Plugin>
+  /// Adds an output plugin to use only for CommonJS bundles.
+  cjsOutputPlugin?: (root: string) => Plugin
   /// When set to true, add a `/*@__PURE__*/` comment before top level
   /// function calls, so that tree shakers will consider them pure.
   /// Note that this can break your code if it makes top-level
@@ -264,7 +266,8 @@ async function bundle(pkg: Package, compiled: Output, options: BuildOptions) {
   await emit(bundle, {
     format: "cjs",
     file: join(dist, "index.cjs"),
-    sourcemap: options.sourceMap
+    sourcemap: options.sourceMap,
+    plugins: options.cjsOutputPlugin ? [options.cjsOutputPlugin(pkg.root)] : []
   })
 
   let tscBundle = await rollup({
