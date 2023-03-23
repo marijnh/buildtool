@@ -272,6 +272,7 @@ async function bundle(pkg: Package, compiled: Output, options: BuildOptions) {
 
   let tscBundle = await rollup({
     input: pkg.main.replace(/\.ts$/, ".d.ts"),
+    external,
     plugins: [outputPlugin(compiled, ".d.ts", {name: "dummy"}), dts()],
     onwarn(warning, warn) {
       if (warning.code != "CIRCULAR_DEPENDENCY" && warning.code != "UNUSED_EXTERNAL_IMPORT")
