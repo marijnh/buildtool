@@ -283,6 +283,10 @@ async function bundle(pkg: Package, compiled: Output, options: BuildOptions) {
     format: "esm",
     file: join(dist, "index.d.ts")
   })
+  await emit(tscBundle, {
+    format: "esm",
+    file: join(dist, "index.d.cts")
+  })
 }
 
 function allDirs(pkgs: readonly Package[]) {
