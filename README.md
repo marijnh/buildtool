@@ -21,7 +21,7 @@ Assumes your projects are set up like this:
 
 ## API
 
- * **`build`**`(main: string | readonly string[], options: ?BuildOptions = {}) → Promise`\
+ * **`build`**`(main: string | readonly string[], options?: BuildOptions = {}) → Promise`\
    Build the package with main entry point `main`, or the set of
    packages with the given entry point files. Output files will be
    written to the `dist` directory one level up from the entry file.
@@ -29,7 +29,7 @@ Assumes your projects are set up like this:
    files will be built in-place.
 
 
- * **`watch`**`(mains: readonly string[], extra: ?readonly string[] = [], options: ?BuildOptions = {})`\
+ * **`watch`**`(mains: readonly string[], extra?: readonly string[] = [], options?: BuildOptions = {})`\
    Build the given packages, along with an optional set of extra
    files, and keep rebuilding them every time an input file changes.
 
@@ -38,31 +38,34 @@ Assumes your projects are set up like this:
 
 Options passed to `build` or `watch`.
 
- * **`sourceMap`**`: ?boolean`\
+ * **`sourceMap`**`?: boolean`\
    Generate sourcemap when generating bundle. defaults to false
 
- * **`tsOptions`**`: ?any`\
+ * **`tsOptions`**`?: any`\
    Additional compiler options to pass to TypeScript.
 
- * **`expandLink`**`: ?fn(anchor: string) → string | null`\
+ * **`expandLink`**`?: fn(anchor: string) → string | null`\
    When given, this is used to convert anchor links in the `///`
    comments to full URLs.
 
- * **`outputPlugin`**`: ?fn(root: string) → Plugin | Promise`\
+ * **`outputPlugin`**`?: fn(root: string) → Plugin | Promise`\
    Adds a Rollup output plugin to use.
 
- * **`pureTopCalls`**`: ?boolean`\
+ * **`cjsOutputPlugin`**`?: fn(root: string) → Plugin`\
+   Adds an output plugin to use only for CommonJS bundles.
+
+ * **`pureTopCalls`**`?: boolean`\
    When set to true, add a `/*@__PURE__*/` comment before top level
    function calls, so that tree shakers will consider them pure.
    Note that this can break your code if it makes top-level
    function calls that have side effects.
 
- * **`onRebuildStart`**`: ?fn(packages: readonly string[])`\
+ * **`onRebuildStart`**`?: fn(packages: readonly string[])`\
    Function to call when starting a rebuild via `watch`, passing
    the root directories of the packages that are being built. The
    default is to just log the base names of the directories.
 
- * **`onRebuildEnd`**`: ?fn(packages: readonly string[])`\
+ * **`onRebuildEnd`**`?: fn(packages: readonly string[])`\
    Function to call when finishing a rebuild.
 
 
