@@ -44,6 +44,10 @@ Options passed to `build` or `watch`.
  * **`tsOptions`**`?: any`\
    Additional compiler options to pass to TypeScript.
 
+ * **`bundleName`**`?: string`\
+   Base filename to use for the output bundle and declaration
+   files. Defaults to `"index"`.
+
  * **`expandLink`**`?: fn(anchor: string) → string | null`\
    When given, this is used to convert anchor links in the `///`
    comments to full URLs.

@@ -18,6 +18,9 @@ export interface BuildOptions {
   sourceMap?: boolean
   /// Additional compiler options to pass to TypeScript.
   tsOptions?: any
+  /// Base filename to use for the output bundle and declaration
+  /// files. Defaults to `"index"`.
+  bundleName?: string
   /// When given, this is used to convert anchor links in the `///`
   /// comments to full URLs.
   expandLink?: (anchor: string) => string | null
@@ -256,16 +259,17 @@ async function bundle(pkg: Package, compiled: Output, options: BuildOptions) {
   })
   let dist = join(pkg.root, "dist")
   // makePure set to false when generating source map since this manipulates output after source map is generated
+  let bundleName = options.bundleName || "index"
   await emit(bundle, {
     format: "esm",
-    file: join(dist, "index.js"),
+    file: join(dist, bundleName + ".js"),
     externalLiveBindings: false,
     sourcemap: options.sourceMap
   }, options.pureTopCalls && !options.sourceMap)
 
   await emit(bundle, {
     format: "cjs",
-    file: join(dist, "index.cjs"),
+    file: join(dist, bundleName + ".cjs"),
     sourcemap: options.sourceMap,
     plugins: options.cjsOutputPlugin ? [options.cjsOutputPlugin(pkg.root)] : []
   })
@@ -281,11 +285,11 @@ async function bundle(pkg: Package, compiled: Output, options: BuildOptions) {
   })
   await emit(tscBundle, {
     format: "esm",
-    file: join(dist, "index.d.ts")
+    file: join(dist, bundleName + ".d.ts")
   })
   await emit(tscBundle, {
     format: "esm",
-    file: join(dist, "index.d.cts")
+    file: join(dist, bundleName + ".d.cts")
   })
 }
 
