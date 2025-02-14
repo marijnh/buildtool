@@ -24,6 +24,9 @@ export interface BuildOptions {
   /// When given, this is used to convert anchor links in the `///`
   /// comments to full URLs.
   expandLink?: (anchor: string) => string | null
+  /// When given, prefix this to links in the comments that start with
+  /// a `/`.
+  expandRootLink?: string
   /// Adds a Rollup output plugin to use.
   outputPlugin?: (root: string) => Plugin | Promise<Plugin>
   /// Adds an output plugin to use only for CommonJS bundles.
@@ -127,6 +130,10 @@ function readAndMangleComments(dirs: readonly string[], options: BuildOptions) {
           comment = comment.replace(/\]\(#((?:[^()]|\([^()]*\))+)\)/g, (m, anchor) => {
             let result = options.expandLink!(anchor)
             return result ? `](${result})` : m
+          })
+        if (options.expandRootLink)
+          comment = comment.replace(/\]\(\/((?:[^()]|\([^()]*\))+)\)/g, (m, link) => {
+            return `](${options.expandRootLink}${link})`
           })
         return `${space}/**\n${space}${comment.slice(space.length).replace(/\/\/\/ ?/g, "")}${space}*/\n`
       })

@@ -52,6 +52,10 @@ Options passed to `build` or `watch`.
    When given, this is used to convert anchor links in the `///`
    comments to full URLs.
 
+ * **`expandRootLink`**`?: string`\
+   When given, prefix this to links in the comments that start with
+   a `/`.
+
  * **`outputPlugin`**`?: fn(root: string) → Plugin | Promise`\
    Adds a Rollup output plugin to use.
 
