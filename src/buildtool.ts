@@ -49,20 +49,20 @@ export interface BuildOptions {
 class Package {
   readonly root: string
   readonly dirs: readonly string[]
-  readonly tests: readonly string[]
+  readonly testDir: string
   readonly json: any
 
   constructor(readonly main: string) {
-    let src = dirname(main), root = dirname(src), tests = join(root, "test")
+    let src = dirname(main), root = dirname(src)
     this.root = root
+    this.testDir = join(root, "test")
     let dirs = this.dirs = [src]
-    if (fs.existsSync(tests)) {
-      this.tests = tsFiles(tests)
-      dirs.push(tests)
-    } else {
-      this.tests = []
-    }
+    if (fs.existsSync(this.testDir)) dirs.push(this.testDir)
     this.json = JSON.parse(fs.readFileSync(join(this.root, "package.json"), "utf8"))
+  }
+
+  get tests() {
+    return fs.existsSync(this.testDir) ? tsFiles(this.testDir) : []
   }
 
   static get(main: string): Package {
