@@ -1,6 +1,6 @@
 {
   "name": "@marijn/buildtool",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Tool for building TypeScript packages",
   "author": {
     "name": "Marijn Haverbeke",
