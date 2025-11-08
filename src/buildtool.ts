@@ -14,6 +14,8 @@ function tsFiles(dir: string) {
 
 /// Options passed to `build` or `watch`.
 export interface BuildOptions {
+  /// Fail the build on type errors. defaults to false
+  typeCheck?: boolean
   /// Generate sourcemap when generating bundle. defaults to false
   sourceMap?: boolean
   /// Additional compiler options to pass to TypeScript.
@@ -146,6 +148,16 @@ function runTS(dirs: readonly string[], tsconfig: any, options: BuildOptions) {
   let host = ts.createCompilerHost(config.options)
   host.readFile = readAndMangleComments(dirs, options)
   let program = ts.createProgram({rootNames: config.fileNames, options: config.options, host})
+
+  if (options.typeCheck) {
+    let diagnostics = ts.getPreEmitDiagnostics(program)
+    if (diagnostics.length > 0) {
+      console.error("Type checking failed:")
+      diagnostics.forEach(diag => console.error(ts.formatDiagnostic(diag, tsFormatHost)))
+      return null
+    }
+  }
+
   let out = new Output, result = program.emit(undefined, out.write)
   return result.emitSkipped ? null : out
 }
