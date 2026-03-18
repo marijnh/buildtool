@@ -1,3 +1,5 @@
+**This repository has moved to https://code.haverbeke.berlin/marijn/buildtool**
+
 # @marijn/buildtool
 
 Utility to build TypeScript projects that conform to a given set of
